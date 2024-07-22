@@ -1,100 +1,87 @@
 
-#### 2-topic.md (Linked List)
+### 2-linked_list.md
+
 ```markdown
 # Linked List
 
-## Introduction
-A linked list is a linear data structure where each element is a separate object, called a node, and contains a reference to the next node in the sequence.
+A linked list is a linear data structure where elements are stored in nodes, and each node points to the next node. This structure allows for efficient insertions and deletions.
 
 ## Types of Linked Lists
-- Singly Linked List
-- Doubly Linked List
-- Circular Linked List
+- **Singly Linked List**: Each node points to the next node.
+- **Doubly Linked List**: Each node points to both the next and the previous node.
+- **Circular Linked List**: The last node points back to the first node.
 
 ## Operations
-- **Insertion:** Add a new node.
-- **Deletion:** Remove a node.
-- **Traversal:** Access each node sequentially.
+- **Insert**: Add an element at a specific position.
+- **Delete**: Remove an element from a specific position.
+- **Search**: Find an element in the list.
 
-## Performance Analysis
-- Insertion: O(1)
-- Deletion: O(1)
-- Traversal: O(n)
+## Performance
+- Insert: O(1) for inserting at the beginning.
+- Delete: O(1) for deleting from the beginning.
+- Search: O(n)
 
 ## Example Problem
-**Problem:** Implement a singly linked list to store integers.
+### Problem
+Implement a singly linked list to manage a to-do list. Each task is stored in a node, and you can add new tasks or remove completed tasks.
 
+### Solution
 ```csharp
-public class Node
+using System;
+
+class Node
 {
-    public int Data;
+    public string Task;
     public Node Next;
 
-    public Node(int data)
+    public Node(string task)
     {
-        Data = data;
+        Task = task;
         Next = null;
     }
 }
 
-public class LinkedList
+class ToDoList
 {
     private Node head;
 
-    public void Insert(int data)
+    public void AddTask(string task)
     {
-        Node newNode = new Node(data);
-        if (head == null)
-        {
-            head = newNode;
-        }
-        else
-        {
-            Node current = head;
-            while (current.Next != null)
-            {
-                current = current.Next;
-            }
-            current.Next = newNode;
-        }
+        Node newNode = new Node(task);
+        newNode.Next = head;
+        head = newNode;
     }
 
-    public void Delete(int data)
+    public void RemoveTask()
     {
-        if (head == null) return;
-
-        if (head.Data == data)
+        if (head != null)
         {
             head = head.Next;
-            return;
-        }
-
-        Node current = head;
-        while (current.Next != null && current.Next.Data != data)
-        {
-            current = current.Next;
-        }
-
-        if (current.Next != null)
-        {
-            current.Next = current.Next.Next;
         }
     }
 
-    public void PrintList()
+    public void ShowTasks()
     {
         Node current = head;
         while (current != null)
         {
-            Console.WriteLine(current.Data);
+            Console.WriteLine(current.Task);
             current = current.Next;
         }
     }
 }
 
-// Usage
-LinkedList list = new LinkedList();
-list.Insert(1);
-list.Insert(2);
-list.Insert(3);
-list.PrintList(); // Output: 1, 2, 3
+class Program
+{
+    static void Main()
+    {
+        ToDoList toDoList = new ToDoList();
+        toDoList.AddTask("Buy groceries");
+        toDoList.AddTask("Clean the house");
+        toDoList.AddTask("Pay bills");
+
+        toDoList.ShowTasks();
+        toDoList.RemoveTask();
+        toDoList.ShowTasks();
+    }
+}

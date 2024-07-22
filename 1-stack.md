@@ -1,65 +1,70 @@
 # Stack
 
 ## Introduction
-A stack is a linear data structure that follows the Last In, First Out (LIFO) principle. It allows operations at one end only.
+A stack is a linear data structure that follows the Last In First Out (LIFO) principle. Elements are added and removed from the top of the stack. This is similar to a stack of plates where you can only take the top plate off or add a plate to the top.
 
 ## Operations
 - **Push:** Adds an element to the top of the stack.
 - **Pop:** Removes the top element from the stack.
 - **Peek:** Returns the top element without removing it.
+- **IsEmpty**: Check if the stack is empty.
 
 ## Performance Analysis
 - Push: O(1)
 - Pop: O(1)
 - Peek: O(1)
+- IsEmpty: O(1)
 
 ## Example Problem
-**Problem:** Implement a stack to reverse a string.
+**Problem:** You are developing a browser history feature. Implement a stack to manage the browsing history. Each time a user visits a new page, push the URL onto the stack. When the user clicks the back button, pop the top URL from the stack.
 
 ```csharp
-public class Stack
+using System;
+using System.Collections.Generic;
+class BrowserHistory
 {
-    private List<char> elements = new List<char>();
+    private Stack<string> history = new Stack<string>();
 
-    public void Push(char item)
+    public void Visit(string url)
     {
-        elements.Add(item);
+        history.Push(url);
+        Console.WriteLine($"Visited: {url}");
     }
 
-    public char Pop()
+    public void Back()
     {
-        if (elements.Count == 0) throw new InvalidOperationException("Stack is empty");
-        char item = elements[elements.Count - 1];
-        elements.RemoveAt(elements.Count - 1);
-        return item;
+        if (history.Count > 0)
+        {
+            string url = history.Pop();
+            Console.WriteLine($"Back to: {url}");
+        }
+        else
+        {
+            Console.WriteLine("No history available.");
+        }
     }
 
-    public char Peek()
+    public void ShowHistory()
     {
-        if (elements.Count == 0) throw new InvalidOperationException("Stack is empty");
-        return elements[elements.Count - 1];
-    }
-
-    public bool IsEmpty()
-    {
-        return elements.Count == 0;
+        Console.WriteLine("Browsing History:");
+        foreach (var url in history)
+        {
+            Console.WriteLine(url);
+        }
     }
 }
 
-// Usage
-public static string ReverseString(string input)
+class Program
 {
-    Stack stack = new Stack();
-    foreach (char c in input)
+    static void Main()
     {
-        stack.Push(c);
-    }
+        BrowserHistory browserHistory = new BrowserHistory();
+        browserHistory.Visit("http://example.com");
+        browserHistory.Visit("http://example.com/about");
+        browserHistory.Visit("http://example.com/contact");
 
-    StringBuilder reversed = new StringBuilder();
-    while (!stack.IsEmpty())
-    {
-        reversed.Append(stack.Pop());
+        browserHistory.ShowHistory();
+        browserHistory.Back();
+        browserHistory.ShowHistory();
     }
-
-    return reversed.ToString();
 }
